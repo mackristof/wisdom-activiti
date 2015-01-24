@@ -127,6 +127,12 @@ public class ProcessBusinessImpl implements ProcessBusiness {
     }
 
     @Override
+    public void setInstanceVariables(String processInstanceId, Map<String,Object> variables){
+        final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+        runtimeService.setVariables(task.getExecutionId(),variables);
+    }
+
+    @Override
     public Task getcurrentTask(String processInstanceId){
         return taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     }

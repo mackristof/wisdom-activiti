@@ -30,5 +30,7 @@ public interface ProcessBusiness {
 
     Map<String, Object> getInstanceVariables(String taskId);
 
+    void setInstanceVariables(String processInstanceId, Map<String, Object> variables);
+
     org.activiti.engine.task.Task getcurrentTask(String processInstanceId);
 }

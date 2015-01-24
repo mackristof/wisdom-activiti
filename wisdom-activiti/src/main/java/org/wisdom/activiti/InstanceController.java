@@ -19,19 +19,23 @@
  */
 package org.wisdom.activiti;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.wisdom.activiti.process.ProcessBusiness;
 import org.wisdom.api.DefaultController;
 import org.wisdom.api.annotations.*;
+import org.wisdom.api.content.Json;
 import org.wisdom.api.http.HttpMethod;
 import org.wisdom.api.http.Result;
 import org.wisdom.api.security.Authenticated;
 import org.wisdom.api.templates.Template;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +65,9 @@ public class InstanceController extends DefaultController {
      */
     @Requires
     ProcessBusiness processBusiness;
+
+    @Requires
+    Json json;
 
     /**
      * The action method returning the welcome page. It handles
@@ -104,5 +111,18 @@ public class InstanceController extends DefaultController {
         mapDisplay.put("processVariables", processVariables);
         mapDisplay.put("currentTaskName", task.getName());
         return ok(render(instance,mapDisplay));
+    }
+
+    @Route(method = HttpMethod.PUT, uri = "/instance/{id}/variables")
+    public Result setInstanceVariables( @PathParameter("id") String id, @NotNull @Body JsonNode param){
+        if (request().accepts("application/json")) {
+            final ProcessInstance processInstance = processBusiness.instanceById(id);
+            Map<String , Object> variables = new HashMap<>();
+
+
+            processBusiness.setInstanceVariables(processInstance.getProcessInstanceId(),variables);
+            return ok();
+        }
+        return badRequest();
     }
 }
