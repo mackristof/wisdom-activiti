@@ -13,7 +13,7 @@
   <properties>
     <spring.version>4.1.2.RELEASE_1</spring.version>
     <wisdom.version>0.7.0</wisdom.version>
-    <activiti.version>5.17.1-SNAPSHOT</activiti.version>
+    <activiti.version>5.17.0</activiti.version>
     <h2.version>1.4.184_1</h2.version>
   </properties>
 
